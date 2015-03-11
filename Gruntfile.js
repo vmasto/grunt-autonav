@@ -30,27 +30,14 @@ module.exports = function(grunt) {
 
     // Configuration to be run (and then tested).
     autonav: {
-      default_options: {
-        options: {
-        },
+			default_options: {
+				options: {},
 				files: {
-					'tmp/default_options/index.html': ['test/fixtures/default_options/index.html'],
+					'tmp/default_options/second.html': ['test/fixtures/default_options/second.html'],
 					'tmp/default_options/child.html': ['test/fixtures/default_options/child.html']
 				}
-      },
-      custom_options: {
-        options: {
-					parent: '#nav',
-					childtype: 'div',
-					activeclass: 'current-menu-item',
-					ancestorclass: 'current-menu-ancestor'
-        },
-        files: {
-					'tmp/custom_options/index.html': ['test/fixtures/custom_options/index.html'],
-					'tmp/custom_options/child.html': ['test/fixtures/custom_options/child.html']
-        }
-      }
-    },
+			}
+		},
 
     // Unit tests.
     nodeunit: {

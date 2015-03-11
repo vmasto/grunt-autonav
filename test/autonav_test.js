@@ -30,17 +30,8 @@ exports.autonav = {
   default_options: function(test) {
     test.expect(1);
 
-    var actual = grunt.file.read('tmp/default_options/index.html');
-    var expected = grunt.file.read('test/expected/default_options/index.html');
-    test.equal(actual, expected, 'Files are identical.');
-
-    test.done();
-  },
-  custom_options: function(test) {
-    test.expect(1);
-
-    var actual = grunt.file.read('tmp/custom_options/child.html');
-    var expected = grunt.file.read('test/expected/custom_options/child.html');
+    var actual = grunt.file.read('tmp/default_options/child.html');
+    var expected = grunt.file.read('test/expected/default_options/child.html');
     test.equal(actual, expected, 'Files are identical.');
 
     test.done();

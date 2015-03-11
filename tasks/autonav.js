@@ -18,6 +18,7 @@ module.exports = function(grunt) {
 			parent: '.navigation',
 			childtype: 'li',
 			activeclass: 'current',
+			parentclass: 'current-parent',
 			ancestorclass: 'current-ancenstor'
     });
 
@@ -49,12 +50,15 @@ module.exports = function(grunt) {
 				return false;
 			}
 
-			navnodes.removeClass(options.activeclass, options.ancestorclass);
+			navnodes.removeClass(options.activeclass, options.parentclass, options.ancestorclass);
 			navlinks.each(function() {
 				var _that = $(this);
+				var immediateParent = _that.parent(options.childtype);
+
 				if ( _that.attr('href') === filename ) {
-					_that.parent().addClass(options.activeclass);
-					_that.parentsUntil($(options.parent), options.childtype).not(_that.parent() ).addClass(options.ancestorclass);
+					immediateParent.addClass(options.activeclass);
+					immediateParent.parent().closest(options.childtype).addClass(options.parentclass);
+					immediateParent.parents(options.childtype).addClass(options.ancestorclass);
 				}
 			});
 
