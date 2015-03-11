@@ -1,10 +1,10 @@
 {
   "name": "grunt-autonav",
-  "description": "Add active class to navigation items in static files",
+  "description": "Add active classes to navigation menus in static files.",
   "version": "0.1.0",
   "homepage": "https://github.com/vmasto/grunt-autonav",
   "author": {
-    "name": "vmasto",
+    "name": "Vassilis Mastorostergios",
     "email": "vmasto@gmail.com"
   },
   "repository": {
@@ -37,6 +37,10 @@
     "grunt": "~0.4.5"
   },
   "keywords": [
-    "gruntplugin"
+    "gruntplugin",
+    "active nav",
+    "active menu",
+    "active-nav",
+    "autonav"
   ]
 }

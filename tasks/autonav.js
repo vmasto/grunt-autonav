@@ -10,16 +10,16 @@
 
 module.exports = function(grunt) {
 
-  grunt.registerMultiTask('autonav', 'Add active class to navigation items in static files', function() {
+  grunt.registerMultiTask('autonav', 'Add active classes to navigation menus in static files.', function() {
 		var cheerio = require('cheerio');
 		var path = require('path');
 
     var options = this.options({
 			parent: '.navigation',
 			childtype: 'li',
-			activeclass: 'current',
-			parentclass: 'current-parent',
-			ancestorclass: 'current-ancenstor'
+			activeclass: 'active',
+			parentclass: 'active-parent',
+			ancestorclass: 'active-ancenstor'
     });
 
     // Iterate over all specified file groups.

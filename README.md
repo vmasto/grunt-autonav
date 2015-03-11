@@ -1,6 +1,6 @@
 # grunt-autonav
 
-> Add active class to navigation items in static files
+> Add active classes to current navigation items in static files.
 
 ## Getting Started
 This plugin requires Grunt `~0.4.5`
@@ -37,49 +37,96 @@ grunt.initConfig({
 
 ### Options
 
-#### options.separator
+#### options.parent
 Type: `String`
-Default value: `',  '`
+Default value: `'.navigation'`
 
-A string value that is used to do something with whatever.
+The main navigation item wrapper expressed as a usual CSS selector.
 
-#### options.punctuation
+#### options.childtype
 Type: `String`
-Default value: `'.'`
+Default value: `'li'`
 
-A string value that is used to do something else with whatever else.
+Elements wrapping the navigation links.
+
+#### options.activeclass
+Type: `String`
+Default value: `'active'`
+
+Class to be applied on the active link's parent/childtype.
+
+#### options.parentclass
+Type: `String`
+Default value: `'active-parent'`
+
+Class to be applied on the active link parent's immediate parent.
+
+#### options.ancestorclass
+Type: `String`
+Default value: `'active-ancestor'`
+
+Class to be applied on the all the active link's childtype ancestors.
+
 
 ### Usage Examples
 
 #### Default Options
-In this example, the default options are used to do something with whatever. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result would be `Testing, 1 2 3.`
+The following example constitutes of a basic navigational unordered list with the following markup structure:
+
+```html
+<ul class="navigation">
+	<li><a href="index.html">Home</a></li>
+	<li>
+		<a href="page.html">Page</a>
+		<ul>
+			<li>
+				<a href="second.html">Second</a>
+				<ul>
+					<li><a href="child.html">Child</a></li>
+					<li><a href="sibling.html">Sibling</a></li>
+				</ul>
+			</li>
+		</ul>
+	</li>
+	<li><a href="blog.html">Blog</a></li>
+	<li><a href="contact.html">Contact</a></li>
+</ul>
+```
+
+Creating the task: 
 
 ```js
 grunt.initConfig({
   autonav: {
     options: {},
     files: {
-      'dest/default_options': ['src/testing', 'src/123'],
+      'dest/default_options/child.html': ['src/child.html'],
     },
   },
 });
 ```
+The `autonav` task iterates through all the links inside the `options.parent` element and cross references their `href` attributes with the filename of the running file. When it finds a match, it proceeds to add all active classes.
 
-#### Custom Options
-In this example, custom options are used to do something else with whatever else. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result in this case would be `Testing: 1 2 3 !!!`
+On the previous markup structure the output would be:
 
-```js
-grunt.initConfig({
-  autonav: {
-    options: {
-      separator: ': ',
-      punctuation: ' !!!',
-    },
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
-  },
-});
+```html
+<ul class="navigation">
+	<li><a href="index.html">Home</a></li>
+	<li class="active-ancestor">
+		<a href="page.html">Page</a>
+		<ul>
+			<li class="active-parent active-ancestor">
+				<a href="second.html">Second</a>
+				<ul>
+					<li class="active" ><a href="child.html">Child</a></li>
+					<li><a href="sibling.html">Sibling</a></li>
+				</ul>
+			</li>
+		</ul>
+	</li>
+	<li><a href="blog.html">Blog</a></li>
+	<li><a href="contact.html">Contact</a></li>
+</ul>
 ```
 
 ## Contributing
