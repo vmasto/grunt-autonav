@@ -10,40 +10,58 @@
 
 module.exports = function(grunt) {
 
-  // Please see the Grunt documentation for more information regarding task
-  // creation: http://gruntjs.com/creating-tasks
-
   grunt.registerMultiTask('autonav', 'Add active class to navigation items in static files', function() {
-    // Merge task-specific and/or target-specific options with these defaults.
+		var cheerio = require('cheerio');
+		var path = require('path');
+
     var options = this.options({
-      punctuation: '.',
-      separator: ', '
+			parent: '.navigation',
+			childtype: 'li',
+			activeclass: 'current',
+			ancestorclass: 'current-ancenstor'
     });
 
     // Iterate over all specified file groups.
     this.files.forEach(function(f) {
-      // Concat specified files.
-      var src = f.src.filter(function(filepath) {
-        // Warn on and remove invalid source files (if nonull was set).
-        if (!grunt.file.exists(filepath)) {
-          grunt.log.warn('Source file "' + filepath + '" not found.');
-          return false;
-        } else {
-          return true;
-        }
-      }).map(function(filepath) {
-        // Read file source.
-        return grunt.file.read(filepath);
-      }).join(grunt.util.normalizelf(options.separator));
 
-      // Handle options.
-      src += options.punctuation;
+			var src = f.src.filter(function(filepath) {
+				if ( !grunt.file.exists(filepath) ) {
+					grunt.log.warn('Source file "' + filepath + '" not found.');
+					return false;
+				} else {
+					return true;
+				}
+			});
 
-      // Write the destination file.
-      grunt.file.write(f.dest, src);
+			var $ = cheerio.load(grunt.file.read(src));
+			var filename = path.basename(src);
+			var nav = $(options.parent);
+			var navnodes = nav.find(options.childtype);
+			var navlinks = navnodes.find('> a');
 
-      // Print a success message.
-      grunt.log.writeln('File "' + f.dest + '" created.');
+			if ( !nav.length ) {
+				grunt.log.warn(f.dest + ': Parent selector ' + options.parent + ' not found. Skipping file.');
+				return false;
+			}
+
+			if ( !navlinks.length ) {
+				grunt.log.warn(f.dest + ': Could not find any links inside the specified elements. Skipping file.');
+				return false;
+			}
+
+			navnodes.removeClass(options.activeclass, options.ancestorclass);
+			navlinks.each(function() {
+				var _that = $(this);
+				if ( _that.attr('href') === filename ) {
+					_that.parent().addClass(options.activeclass);
+					_that.parentsUntil($(options.parent), options.childtype).not(_that.parent() ).addClass(options.ancestorclass);
+				}
+			});
+
+			var content = $.html();
+
+			grunt.file.write(f.dest, content);
+			grunt.log.writeln('File "' + f.dest + '" done.');
     });
   });
 
