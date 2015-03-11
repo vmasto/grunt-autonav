@@ -19,7 +19,7 @@ module.exports = function(grunt) {
 			childtype: 'li',
 			activeclass: 'active',
 			parentclass: 'active-parent',
-			ancestorclass: 'active-ancenstor'
+			ancestorclass: 'active-ancestor'
     });
 
     // Iterate over all specified file groups.
